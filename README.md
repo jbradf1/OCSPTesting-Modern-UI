@@ -147,19 +147,28 @@ pip --version
 **Windows:**
 ```bash
 # Option 1: Using Chocolatey (recommended)
+# Requires Chocolatey to be installed first. If you don't have it, install it
+# from an Administrator PowerShell (see the bootstrap command in the
+# "Quick Setup Guide" below) or visit https://chocolatey.org/install
 choco install openssl
 
 # Option 2: Using Scoop
+# Requires Scoop to be installed first. If you don't have it, install it from
+# PowerShell: irm get.scoop.sh | iex   (see https://scoop.sh)
 scoop install openssl
 
-# Option 3: Microsoft Store (if available)
-# Search for "OpenSSL" in Microsoft Store
-# Note: May not be available in all regions
-
-# Option 4: Manual installation
+# Option 3: Manual installation
 # Download from: https://slproweb.com/products/Win32OpenSSL.html
 # Install to a directory in your PATH (e.g., C:\OpenSSL-Win64\bin)
+# IMPORTANT: The slproweb builds require the Microsoft Visual C++
+# Redistributable. The full installer can install it for you; the "Light"
+# builds do NOT, so if you see a "VCRUNTIME140.dll is missing" error, install
+# the latest Visual C++ Redistributable from:
+# https://aka.ms/vs/17/release/vc_redist.x64.exe
 ```
+
+> **Note:** OpenSSL is not currently published on the Microsoft Store. Use
+> Chocolatey, Scoop, or the manual installer above.
 
 **Linux (Ubuntu/Debian):**
 ```bash
@@ -252,7 +261,7 @@ Before installing the OCSP Testing Tool, ensure you have installed:
 2. **Python 3.10+** with pip (for running the application)
 3. **OpenSSL** (for certificate operations)
 
-**💡 Windows Users**: We recommend installing Git and Python from the Microsoft Store for the easiest setup experience. OpenSSL may also be available in the Microsoft Store (check availability in your region). For the best command-line experience, also consider installing **Windows Terminal** from the Microsoft Store.
+**💡 Windows Users**: We recommend installing Git and Python from the Microsoft Store for the easiest setup experience. OpenSSL is **not** available on the Microsoft Store — install it with Chocolatey (`choco install openssl`), Scoop, or the manual installer (see the OpenSSL section above; the manual installer also needs the Microsoft Visual C++ Redistributable). For the best command-line experience, also consider installing **Windows Terminal** from the Microsoft Store.
 
 See the [System Requirements](#system-requirements) section above for detailed installation instructions.
 
@@ -421,10 +430,12 @@ python -m pip --version
 
 #### OpenSSL Not Found
 ```bash
-# Windows: Try Microsoft Store first (if available)
-# Search for "OpenSSL" in Microsoft Store
-# Or install using Chocolatey: choco install openssl
-# Or add OpenSSL to PATH: set PATH=%PATH%;C:\OpenSSL-Win64\bin
+# Windows: OpenSSL is not on the Microsoft Store.
+# Install using Chocolatey: choco install openssl
+# Or using Scoop: scoop install openssl
+# Or download the manual installer (requires the Microsoft Visual C++
+# Redistributable): https://slproweb.com/products/Win32OpenSSL.html
+# Or add an existing OpenSSL to PATH: set PATH=%PATH%;C:\OpenSSL-Win64\bin
 
 # Linux/macOS: Install OpenSSL
 sudo apt install openssl  # Ubuntu/Debian

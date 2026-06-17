@@ -1,4 +1,4 @@
-# OCSP Server Test Suite Modern UI
+# OCSP Server Test Suite Modern UI (Installing process remains the same)
 
 A comprehensive testing application for OCSP (Online Certificate Status Protocol) servers with both GUI and monitoring capabilities. This tool runs structured tests against OCSP servers and provides detailed reporting with exportable results (JSON/CSV).
 
@@ -15,7 +15,7 @@ A comprehensive testing application for OCSP (Online Certificate Status Protocol
 
 - **Comprehensive OCSP Testing**: Protocol compliance, security, performance, and status validation
 - **CRL Monitoring**: Certificate Revocation List checking and validation
-- **GUI Interface**: User-friendly Windows application with real-time monitoring
+- **GUI Interface**: A new modernize UI
 - **Export Capabilities**: Results exportable in JSON and CSV formats
 - **Certificate Validation**: Supports PEM/DER certificate formats
 - **Advanced Testing**: IKEv2 in-band OCSP, signed client requests, and more

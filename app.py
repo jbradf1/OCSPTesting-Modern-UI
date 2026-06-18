@@ -76,7 +76,7 @@ class OCSPTesterGUI(tk.Tk):
         super().__init__()
         self.title("OCSP Server Test Suite")
         self.geometry("1280x860")
-        self.minsize(1040, 720)
+        self.minsize(1000, 640)
 
         # Apply the modern ttk styling before anything is built
         self._setup_styles()
@@ -284,27 +284,27 @@ class OCSPTesterGUI(tk.Tk):
     def _card(self, parent, title, expand=False):
         """A titled surface 'card' to group related controls."""
         c = ttk.Labelframe(parent, text=f"  {title}  ", style="Card.TLabelframe",
-                           padding=16)
-        c.pack(fill="both" if expand else "x", expand=expand, pady=(0, 16))
+                           padding=12)
+        c.pack(fill="both" if expand else "x", expand=expand, pady=(0, 10))
         return c
 
     def _view_header(self, parent, title, subtitle):
         ttk.Label(parent, text=title, style="Title.TLabel").pack(anchor="w")
         ttk.Label(parent, text=subtitle, style="Subtitle.TLabel").pack(
-            anchor="w", pady=(2, 18))
+            anchor="w", pady=(2, 12))
 
     def _form_row(self, parent, row, label, var, browse=False):
         """A label + full-width entry (+ optional Browse) on a card grid."""
         ttk.Label(parent, text=label, style="TLabel").grid(
-            row=row, column=0, sticky="w", padx=(0, 14), pady=7)
+            row=row, column=0, sticky="w", padx=(0, 14), pady=4)
         entry = ttk.Entry(parent, textvariable=var)
         if browse:
-            entry.grid(row=row, column=1, sticky="ew", pady=7)
+            entry.grid(row=row, column=1, sticky="ew", pady=4)
             ttk.Button(parent, text="Browse\u2026", style="Ghost.TButton",
                        command=lambda: self._browse(var)).grid(
-                row=row, column=2, sticky="w", padx=(10, 0), pady=7)
+                row=row, column=2, sticky="w", padx=(10, 0), pady=4)
         else:
-            entry.grid(row=row, column=1, columnspan=2, sticky="ew", pady=7)
+            entry.grid(row=row, column=1, columnspan=2, sticky="ew", pady=4)
         return entry
 
     def _style_text(self, widget):
@@ -388,19 +388,24 @@ class OCSPTesterGUI(tk.Tk):
         content.rowconfigure(0, weight=1)
         content.columnconfigure(0, weight=1)
 
-        # Monitor and console are dominated by a log that should fill the
-        # window, so they don't scroll. The testing view is a long form, so it
-        # lives inside a vertical scroll container.
-        self.monitor_frame = ttk.Frame(content, padding=24)
-        self.console_log_frame = ttk.Frame(content, padding=24)
+        # The monitor and testing views are tall stacks of cards + a log, so
+        # each lives inside its own vertical scroll container to keep the
+        # controls below the fold (actions, filters, log) reachable on smaller
+        # windows. The console is a single full-height log, so it doesn't scroll.
+        monitor_outer = ttk.Frame(content)
+        monitor_interior = self._make_scrollable(monitor_outer)
+        self.monitor_frame = ttk.Frame(monitor_interior, padding=16)
+        self.monitor_frame.pack(fill="both", expand=True)
+
+        self.console_log_frame = ttk.Frame(content, padding=16)
 
         test_outer = ttk.Frame(content)
         test_interior = self._make_scrollable(test_outer)
-        self.test_frame = ttk.Frame(test_interior, padding=24)
+        self.test_frame = ttk.Frame(test_interior, padding=16)
         self.test_frame.pack(fill="both", expand=True)
 
         self._views = {
-            "monitor": self.monitor_frame,
+            "monitor": monitor_outer,
             "testing": test_outer,
             "console": self.console_log_frame,
         }
@@ -493,12 +498,12 @@ class OCSPTesterGUI(tk.Tk):
 
         # --- Two columns: trust anchor config + test categories ---
         row = ttk.Frame(f)
-        row.pack(fill="x", pady=(0, 16))
+        row.pack(fill="x", pady=(0, 10))
         row.columnconfigure(0, weight=1, uniform="cols")
         row.columnconfigure(1, weight=1, uniform="cols")
 
         ta = ttk.Labelframe(row, text="  Trust Anchor Configuration  ",
-                            style="Card.TLabelframe", padding=16)
+                            style="Card.TLabelframe", padding=12)
         ta.grid(row=0, column=0, sticky="nsew", padx=(0, 8))
         ta.columnconfigure(1, weight=1)
 
@@ -528,7 +533,7 @@ class OCSPTesterGUI(tk.Tk):
         ttk.Label(age, text="hours (1\u2013168, default 24)", style="Muted.TLabel").pack(side="left", padx=(8, 0))
 
         tc = ttk.Labelframe(row, text="  Test Categories  ",
-                            style="Card.TLabelframe", padding=16)
+                            style="Card.TLabelframe", padding=12)
         tc.grid(row=0, column=1, sticky="nsew", padx=(8, 0))
 
         self.var_enable_ocsp_tests = tk.BooleanVar(value=True)
@@ -623,9 +628,9 @@ class OCSPTesterGUI(tk.Tk):
         self._form_row(card, 0, "Issuer Certificate", self.var_issuer_path, browse=True)
         self._form_row(card, 1, "Certificate File", self.var_good_cert, browse=True)
 
-        ttk.Label(card, text="OR Serial Number", style="TLabel").grid(row=2, column=0, sticky="w", padx=(0, 14), pady=7)
+        ttk.Label(card, text="OR Serial Number", style="TLabel").grid(row=2, column=0, sticky="w", padx=(0, 14), pady=4)
         serial_wrap = ttk.Frame(card, style="Card.TFrame")
-        serial_wrap.grid(row=2, column=1, columnspan=2, sticky="ew", pady=7)
+        serial_wrap.grid(row=2, column=1, columnspan=2, sticky="ew", pady=4)
         serial_wrap.columnconfigure(0, weight=1)
         ttk.Entry(serial_wrap, textvariable=self.var_cert_serial).grid(row=0, column=0, sticky="ew")
         ttk.Label(serial_wrap, text="hex 0x123  or  decimal 123", style="Muted.TLabel").grid(row=0, column=1, padx=(10, 0))
